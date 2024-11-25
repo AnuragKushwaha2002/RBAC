@@ -1,0 +1,47 @@
+<%- include('layouts/header') %>
+
+<h1>Manage Roles and Permissions</h1>
+
+<!-- Add Role Form -->
+<form action="/admin/roles" method="POST">
+  <div>
+    <label for="name">Role Name:</label>
+    <input type="text" id="name" name="name" placeholder="Role Name" required />
+  </div>
+  <div>
+    <label for="permissions">Permissions:</label>
+    <input type="text" id="permissions" name="permissions" placeholder="Comma-separated permissions" />
+  </div>
+  <button type="submit">Add Role</button>
+</form>
+
+<!-- Roles Table -->
+<h2>Existing Roles</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Permissions</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% roles.forEach(role => { %>
+    <tr>
+      <td><%= role.name %></td>
+      <td><%= role.permissions.join(', ') %></td>
+      <td>
+        <form action="/admin/role/<%= role._id %>/permissions" method="POST">
+          <input type="text" name="permissions" value="<%= role.permissions.join(', ') %>" />
+          <button type="submit">Update</button>
+        </form>
+        <form action="/admin/role/<%= role._id %>/delete" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('layouts/footer') %>
